@@ -1,3 +1,4 @@
+const fortune = require('./lib/fortune')
 const express = require ('express');
 const expressHandlebars = require('express-handlebars');
 
@@ -21,8 +22,7 @@ app.get('/', (req, res)=> {
 
 // about page route
 app.get('/about', (req, res) => {
-    const randomFortune = fortunes[Math.floor(Math.random()*fortunes.length)]
-    res.render('about', { fortune: randomFortune })
+    res.render('about', { fortune: fortune.getFortune() })
 })
 
 // custom 404 page
@@ -41,13 +41,6 @@ app.use((err, req, res, next)=> {
     res.send('500 - Server Error')
 })
 
-const fortunes = [
-    "Conquer your fears or they will conquer you.",
-    "River need springs.",
-    "Do not fear what you don't know.",
-    "You will have a pleasant surprise.",
-    "Whenever possible, keep it simple."
-]
 
 app.listen(port, () => console.log(
     `Express started on http://localhost:${port}; ' + ' press Ctrl-c to terminate.`
