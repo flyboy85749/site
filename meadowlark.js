@@ -1,7 +1,9 @@
+/* eslint-disable no-undef */
 const express = require('express');
 const expressHandlebars = require('express-handlebars');
 const handlers = require('./lib/handlers')
 const app = express();
+const bodyParser = require('body-parser');
 
 // configure Handlebars view engine
 app.engine('handlebars', expressHandlebars({
@@ -13,6 +15,13 @@ app.set('view engine', 'handlebars')
 const port = process.env.PORT || 3000;
 
 app.use(express.static(__dirname + '/public'))
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true}))
+
+app.get('/newsletter-signup', handlers.newsletterSignup)
+app.post('/newsletter-signup/process', handlers.newsletterSignupProcess)
+app.get('/newsletter-signup/thank-you', handlers.newsletterSignupThankYou)
 
 // home page route
 app.get('/', handlers.home)
